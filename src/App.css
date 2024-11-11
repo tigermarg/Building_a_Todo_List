@@ -1,0 +1,31 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  border: solid 2px rgba(128, 128, 128, 0.596);
+  border-radius: 25px;
+  box-shadow: 10px 5px 5px lightgray
+}
+
+.todo-item{
+  text-align: left;
+}
+
+button{
+  padding: 5px 10px;
+  margin-left: 10px;
+}
+
+button:disabled {
+  background-color: rgb(255, 251, 251)
+}
+
+.task-box {
+  width: 80%;
+  height: 1.5em;
+}
+
+.checkbox {
+  background-color: rgb(184, 221, 233)
+}
