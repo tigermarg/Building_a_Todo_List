@@ -1,13 +1,23 @@
 import { useState, useReducer } from 'react';
 import { ACTIONS } from './utilities/ACTIONS';
-import './App.css';
 import initialState from './utilities/data.mjs';
+import { Todo } from './components/Todo';
+import './App.css';
 
 // Reducer function
 function todoReducer (todos, action){ 
   switch (action.type){
       case ACTIONS.ADD_TODO:
-          return [...todos, newTodo(action.payload.title)]
+          return [...todos, newTodo(action.payload.title)];
+      case ACTIONS.EDIT_TODO: 
+        return todos.map(todo => 
+          todo.id === action.payload.id ? {...todo, title: action.payload.title} : todo );
+      case ACTIONS.DELETE_TODO: 
+        return todos.filter(todo => todo.id !==action.payload.id);
+      case ACTIONS.TOGGLE_COMPLETE:
+        return todos.map(todo => todo.id === action.payload.id ? {...todo, completed: !todo.completed} : todo);
+      default:
+        return todos;
   }
 };
 
@@ -17,32 +27,37 @@ function newTodo(title){
     userId: 1,
     id: Date.now(), 
     title: title,
-    complete: false }
+    completed: false }
 }
 
 function App() {
-  const [todos, dispatch] = useReducer(todoReducer, initialState) //useReducer
-  const [title, setTitle] = useState('') //useState
+  const [todos, dispatch] = useReducer(todoReducer, initialState ) //useReducer
+  const [name, setName] = useState('') //useState
+
 
 // Change handler
 function handleChange(e){
-  setTitle(e.target.value)
+  setName(e.target.value)
 }
 
 // Submit handler
 function handleSubmit(e){
   e.preventDefault()
-  dispatch({ type: ACTIONS.ADD_TODO, payload: { title: title} })
-  setTitle('')
+  dispatch({ type: ACTIONS.ADD_TODO, payload: { title: name} })
+  setName('')
 }
   
-// console.log(todos)
 return (
   <>
+    <h2>To Do List</h2>
     <form onSubmit={handleSubmit}>
-      <input type="text" value={title} onChange={handleChange} placeholder='Enter task'/>
+      <input className="task-box" type="text" value={name} onChange={handleChange} placeholder='Enter task'/>
       <button type="submit">Add</button>
     </form>
+
+    {todos.map(todo => {
+      return <Todo key={todo.id} todo={todo} dispatch={dispatch}/>
+    })}
   </>
 )
 
