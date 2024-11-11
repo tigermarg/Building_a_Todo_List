@@ -32,26 +32,30 @@ function newTodo(title){
 
 function App() {
   const [todos, dispatch] = useReducer(todoReducer, initialState ) //useReducer
-  const [name, setName] = useState('') //useState
+  const [title, setTitle] = useState('') //useState
 
 
 // Change handler
 function handleChange(e){
-  setName(e.target.value)
+  setTitle(e.target.value)
 }
 
 // Submit handler
 function handleSubmit(e){
   e.preventDefault()
-  dispatch({ type: ACTIONS.ADD_TODO, payload: { title: name} })
-  setName('')
+  if(title.trim() == ''){
+    alert(`Enter Task`);
+    return;
+  }
+  dispatch({ type: ACTIONS.ADD_TODO, payload: { title: title} })
+  setTitle('')
 }
   
 return (
   <>
     <h2>To Do List</h2>
     <form onSubmit={handleSubmit}>
-      <input className="task-box" type="text" value={name} onChange={handleChange} placeholder='Enter task'/>
+      <input className="task-box" type="text" value={title} onChange={handleChange} placeholder='Enter task'/>
       <button type="submit">Add</button>
     </form>
 
