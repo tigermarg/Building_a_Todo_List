@@ -8,7 +8,7 @@ import './App.css';
 function todoReducer (todos, action){ 
   switch (action.type){
       case ACTIONS.ADD_TODO:
-          return [...todos, newTodo(action.payload.title)];
+          return [newTodo(action.payload.title), ...todos];
       case ACTIONS.EDIT_TODO: 
         return todos.map(todo => 
           todo.id === action.payload.id ? {...todo, title: action.payload.title} : todo );
